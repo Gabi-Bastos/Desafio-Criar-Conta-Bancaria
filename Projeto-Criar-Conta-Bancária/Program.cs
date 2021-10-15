@@ -24,9 +24,12 @@ namespace DIO.Bank
 						Transferir();
 						break;
 					case "4":
-						Sacar();
+						 PIX();
 						break;
 					case "5":
+						Sacar();
+						break;
+					case "6":
 						Depositar();
 						break;
                     case "C":
@@ -80,6 +83,30 @@ namespace DIO.Bank
             listContas[indiceContaOrigem].Transferir(valorTransferencia, listContas[indiceContaDestino]);
 		}
 
+		private static void PIX()
+		{
+			Console.Write("Digite a chave da conta de origem: ");
+			string indiceContaOrigem = Console.ReadLine();
+
+			Console.Write("Digite a chave da conta de destino: ");
+			string indiceContaDestino = Console.ReadLine();
+
+			Console.Write("Digite o valor a ser transferido: ");
+			double valorTransferencia = double.Parse(Console.ReadLine());
+
+	       procurarContaPorPix(indiceContaOrigem).fazerpix(valorTransferencia, procurarContaPorPix(indiceContaDestino));
+		}
+
+		private static Conta procurarContaPorPix(string pix)
+		{
+			foreach (Conta conta in listContas)
+			{
+				if (conta.getPix() == pix)
+					return conta;
+			}
+			return null;
+		}
+
 		private static void InserirConta()
 		{
 			Console.WriteLine("Inserir nova conta");
@@ -90,6 +117,9 @@ namespace DIO.Bank
 			Console.Write("Digite o Nome do Cliente: ");
 			string entradaNome = Console.ReadLine();
 
+			Console.Write("Digite o PIX: ");
+			string entradapix = Console.ReadLine();
+
 			Console.Write("Digite o saldo inicial: ");
 			double entradaSaldo = double.Parse(Console.ReadLine());
 
@@ -99,7 +129,8 @@ namespace DIO.Bank
 			Conta novaConta = new Conta(tipoConta: (TipoConta)entradaTipoConta,
 										saldo: entradaSaldo,
 										credito: entradaCredito,
-										nome: entradaNome);
+										nome: entradaNome,
+										pix: entradapix );
 
 			listContas.Add(novaConta);
 		}
@@ -125,14 +156,15 @@ namespace DIO.Bank
 		private static string ObterOpcaoUsuario()
 		{
 			Console.WriteLine();
-			Console.WriteLine("DIO Bank a seu dispor!!!");
+			Console.WriteLine("Bem Vindo ao Banco DIO!");
 			Console.WriteLine("Informe a opção desejada:");
 
 			Console.WriteLine("1- Listar contas");
 			Console.WriteLine("2- Inserir nova conta");
 			Console.WriteLine("3- Transferir");
-			Console.WriteLine("4- Sacar");
-			Console.WriteLine("5- Depositar");
+			Console.WriteLine("4- Fazer PIX");
+			Console.WriteLine("5- Sacar");
+			Console.WriteLine("6- Depositar");
             Console.WriteLine("C- Limpar Tela");
 			Console.WriteLine("X- Sair");
 			Console.WriteLine();

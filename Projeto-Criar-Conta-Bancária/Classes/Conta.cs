@@ -4,24 +4,26 @@ namespace DIO.Bank
 {
 	public class Conta
 	{
-		// Atributos
+		
 		private TipoConta TipoConta { get; set; }
 		private double Saldo { get; set; }
 		private double Credito { get; set; }
 		private string Nome { get; set; }
+		private string PIX { get; set; }
 
-		// Métodos
-		public Conta(TipoConta tipoConta, double saldo, double credito, string nome)
+		
+		public Conta(TipoConta tipoConta, double saldo, double credito, string nome, string pix)
 		{
 			this.TipoConta = tipoConta;
 			this.Saldo = saldo;
 			this.Credito = credito;
 			this.Nome = nome;
+			this.PIX = pix;
 		}
 
 		public bool Sacar(double valorSaque)
 		{
-            // Validação de saldo suficiente
+            
             if (this.Saldo - valorSaque < (this.Credito *-1)){
                 Console.WriteLine("Saldo insuficiente!");
                 return false;
@@ -29,7 +31,7 @@ namespace DIO.Bank
             this.Saldo -= valorSaque;
 
             Console.WriteLine("Saldo atual da conta de {0} é {1}", this.Nome, this.Saldo);
-            // https://docs.microsoft.com/pt-br/dotnet/standard/base-types/composite-formatting
+            
 
             return true;
 		}
@@ -48,7 +50,21 @@ namespace DIO.Bank
             }
 		}
 
-        public override string ToString()
+
+		public void fazerpix(double valorTransferencia, Conta contaDestino)
+		{
+			if (this.Sacar(valorTransferencia))
+			{
+				contaDestino.Depositar(valorTransferencia);
+			}
+		}
+
+		public string getPix()
+        {
+			return PIX;
+        }
+
+		public override string ToString()
 		{
             string retorno = "";
             retorno += "TipoConta " + this.TipoConta + " | ";
